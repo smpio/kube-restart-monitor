@@ -155,6 +155,10 @@ func handleContainerRestart(pod *v1.Pod, containerStatus *v1.ContainerStatus) {
 	if err != nil {
 		log.Printf("Could not construct reference to: '%#v' due to: '%v'", pod, err)
 	}
+
+	msg := formatMessage(pod, containerStatus)
+	log.Println(msg)
+
 	event := &v1.Event{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      fmt.Sprintf("%v.%x", pod.Name, time.Now().UnixNano()),
@@ -162,7 +166,7 @@ func handleContainerRestart(pod *v1.Pod, containerStatus *v1.ContainerStatus) {
 		},
 		InvolvedObject: *ref,
 		Reason:         eventReason,
-		Message:        formatMessage(pod, containerStatus),
+		Message:        msg,
 		FirstTimestamp: t,
 		LastTimestamp:  t,
 		Count:          1,
