@@ -172,7 +172,7 @@ func handleContainerRestart(pod *v1.Pod, containerStatus *v1.ContainerStatus) {
 		},
 	}
 
-	_, err = clientset.CoreV1().Events(metav1.NamespaceDefault).Create(context.TODO(), event, metav1.CreateOptions{})
+	_, err = clientset.CoreV1().Events(pod.Namespace).Create(context.TODO(), event, metav1.CreateOptions{})
 	if err != nil {
 		log.Printf("Unable to write event: '%v'", err)
 	}
