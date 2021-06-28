@@ -89,7 +89,7 @@ func internalPodWatcher(c chan WatchEvent) error {
 	for _, pod := range list.Items {
 		c <- WatchEvent{
 			Type: watch.Added,
-			Pod:  &pod,
+			Pod:  pod.DeepCopy(),
 		}
 	}
 
